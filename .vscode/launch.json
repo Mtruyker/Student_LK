@@ -1,0 +1,34 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Student (Supabase)",
+      "request": "launch",
+      "type": "dart",
+      "toolArgs": [
+        "--dart-define=SUPABASE_URL=https://gfxkyhnaljhfiuqzclcs.supabase.co",
+        "--dart-define=SUPABASE_ANON_KEY=sb_publishable__Bgm1BiIXbxU8yAVbkAdSQ_L5PD-OXP"
+      ]
+    },
+    {
+      "name": "Admin (Supabase)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_admin.dart",
+      "toolArgs": [
+        "--dart-define=SUPABASE_URL=https://gfxkyhnaljhfiuqzclcs.supabase.co",
+        "--dart-define=SUPABASE_ANON_KEY=sb_publishable__Bgm1BiIXbxU8yAVbkAdSQ_L5PD-OXP"
+      ]
+    },
+    {
+      "name": "Teacher (Supabase)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_teacher.dart",
+      "toolArgs": [
+        "--dart-define=SUPABASE_URL=https://gfxkyhnaljhfiuqzclcs.supabase.co",
+        "--dart-define=SUPABASE_ANON_KEY=sb_publishable__Bgm1BiIXbxU8yAVbkAdSQ_L5PD-OXP"
+      ]
+    }
+  ]
+}

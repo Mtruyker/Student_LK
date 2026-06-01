@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-student_cabinet}
+      POSTGRES_USER: ${POSTGRES_USER:-student_cabinet}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-student_cabinet}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-student_cabinet} -d ${POSTGRES_DB:-student_cabinet}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8080
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production-student-cabinet}
+      ALLOWED_ORIGIN: ${ALLOWED_ORIGIN:-https://student.example.com}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-student_cabinet}:${POSTGRES_PASSWORD:-student_cabinet}@db:5432/${POSTGRES_DB:-student_cabinet}?sslmode=disable
+      SEED_DEMO_DATA: ${SEED_DEMO_DATA:-false}
+      DEMO_STUDENT_EMAIL: ${DEMO_STUDENT_EMAIL:-ivan@example.com}
+      DEMO_STUDENT_PASSWORD: ${DEMO_STUDENT_PASSWORD:-student123}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      TEACHER_EMAIL: ${TEACHER_EMAIL:-teacher@example.com}
+      TEACHER_PASSWORD: ${TEACHER_PASSWORD:-teacher123}
+      TEACHER_NAME: ${TEACHER_NAME:-Рђ. Рќ. РЎРµСЂРіРµРµРІ}
+    expose:
+      - "8080"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:-student.example.com}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-admin@example.com}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:
