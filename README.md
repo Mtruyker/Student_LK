@@ -113,25 +113,31 @@ where email = 'admin@example.com';
 
 Проект можно задеплоить как **Progressive Web App** — студенты смогут добавить на главный экран iPhone/Android через кнопку «Поделиться» в Safari или «Установить» в Chrome.
 
-**Рекомендуемый хостинг**: Vercel (бесплатно, автодеплой, HTTPS)
+**Хостинг**: GitHub Pages (бесплатно, автодеплой, HTTPS)
 
-Подробная инструкция: [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) или [PWA_DEPLOYMENT.md](./PWA_DEPLOYMENT.md)
+Подробная инструкция: [GITHUB_PAGES_SETUP.md](./GITHUB_PAGES_SETUP.md)
 
-Быстрый старт:
-```bash
-# Через CLI
-npm install -g vercel
-vercel login
-vercel
-# Добавить SUPABASE_URL и SUPABASE_ANON_KEY в environment variables
-vercel --prod
-```
+### Быстрый старт:
 
-После деплоя настроить в Supabase Dashboard → Authentication → URL Configuration:
-```
-Site URL: https://student-lk.vercel.app
-Redirect URLs: https://student-lk.vercel.app
-```
+1. Добавить secrets в GitHub:
+   - `SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
+
+2. Включить GitHub Pages:
+   - Settings → Pages → Source: **GitHub Actions**
+
+3. Запушить в main:
+   ```bash
+   git push origin main
+   ```
+
+4. Приложение доступно: `https://mtruyker.github.io/Student_LK/`
+
+5. Настроить в Supabase Dashboard → Authentication → URL Configuration:
+   ```
+   Site URL: https://mtruyker.github.io/Student_LK/
+   Redirect URLs: https://mtruyker.github.io/Student_LK/
+   ```
 
 ## Что хранится в базе
 
