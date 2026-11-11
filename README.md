@@ -109,6 +109,30 @@ where email = 'admin@example.com';
 
 После смены роли нужно полностью выйти из приложения и войти заново, чтобы получить новый JWT.
 
+## Деплой как PWA
+
+Проект можно задеплоить как **Progressive Web App** — студенты смогут добавить на главный экран iPhone/Android через кнопку «Поделиться» в Safari или «Установить» в Chrome.
+
+**Рекомендуемый хостинг**: Vercel (бесплатно, автодеплой, HTTPS)
+
+Подробная инструкция: [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) или [PWA_DEPLOYMENT.md](./PWA_DEPLOYMENT.md)
+
+Быстрый старт:
+```bash
+# Через CLI
+npm install -g vercel
+vercel login
+vercel
+# Добавить SUPABASE_URL и SUPABASE_ANON_KEY в environment variables
+vercel --prod
+```
+
+После деплоя настроить в Supabase Dashboard → Authentication → URL Configuration:
+```
+Site URL: https://student-lk.vercel.app
+Redirect URLs: https://student-lk.vercel.app
+```
+
 ## Что хранится в базе
 
 Проект использует таблицы:

@@ -1,0 +1,12 @@
+{
+  "buildCommand": "flutter build web --release --dart-define=USE_SUPABASE=true --dart-define=SUPABASE_URL=$SUPABASE_URL --dart-define=SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY",
+  "outputDirectory": "build/web",
+  "framework": null,
+  "installCommand": "flutter pub get",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
