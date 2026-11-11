@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
+import '../shared/animations/page_transitions.dart';
 import '../shared/theme/app_colors.dart';
 import '../shared/widgets/connectivity_widgets.dart';
 import '../shared/widgets/error_widgets.dart';
@@ -203,61 +204,70 @@ class _HomeContent extends StatelessWidget {
         final wide = constraints.maxWidth >= 1060;
 
         final leftColumn = <Widget>[
-          SectionCard(
-            title: AppLocalizations.of(context)!.nextLesson,
-            trailing: TextButton(
-              onPressed: () =>
-                  context.read<StudentAppState>().selectTab(AppTab.schedule),
-              child: Text(AppLocalizations.of(context)!.allLessons),
+          StaggeredListAnimation(
+            index: 0,
+            child: SectionCard(
+              title: AppLocalizations.of(context)!.nextLesson,
+              trailing: TextButton(
+                onPressed: () =>
+                    context.read<StudentAppState>().selectTab(AppTab.schedule),
+                child: Text(AppLocalizations.of(context)!.allLessons),
+              ),
+              child: appState.nextLesson == null
+                  ? const _SectionEmptyState(
+                      icon: Icons.nightlight_round,
+                      title: 'На сегодня занятий больше нет',
+                      subtitle:
+                          'Откройте расписание, чтобы посмотреть остальные дни недели.',
+                    )
+                  : LessonPreview(lesson: appState.nextLesson!),
             ),
-            child: appState.nextLesson == null
-                ? const _SectionEmptyState(
-                    icon: Icons.nightlight_round,
-                    title: 'На сегодня занятий больше нет',
-                    subtitle:
-                        'Откройте расписание, чтобы посмотреть остальные дни недели.',
-                  )
-                : LessonPreview(lesson: appState.nextLesson!),
           ),
           const SizedBox(height: 16),
-          SectionCard(
-            title: AppLocalizations.of(context)!.today,
-            child: appState.todayLessons.isEmpty
-                ? const _SectionEmptyState(
-                    icon: Icons.event_busy_rounded,
-                    title: 'Сегодня пар нет',
-                    subtitle:
-                        'Можно переключиться на другое расписание или заняться документами и запросами.',
-                  )
-                : Column(
-                    children: <Widget>[
-                      for (final lesson in appState.todayLessons) ...<Widget>[
-                        CompactLessonRow(lesson: lesson),
-                        if (lesson != appState.todayLessons.last)
-                          const Divider(height: 24),
+          StaggeredListAnimation(
+            index: 1,
+            child: SectionCard(
+              title: AppLocalizations.of(context)!.today,
+              child: appState.todayLessons.isEmpty
+                  ? const _SectionEmptyState(
+                      icon: Icons.event_busy_rounded,
+                      title: 'Сегодня пар нет',
+                      subtitle:
+                          'Можно переключиться на другое расписание или заняться документами и запросами.',
+                    )
+                  : Column(
+                      children: <Widget>[
+                        for (final lesson in appState.todayLessons) ...<Widget>[
+                          CompactLessonRow(lesson: lesson),
+                          if (lesson != appState.todayLessons.last)
+                            const Divider(height: 24),
+                        ],
                       ],
-                    ],
-                  ),
+                    ),
+            ),
           ),
           const SizedBox(height: 16),
-          SectionCard(
-            title: AppLocalizations.of(context)!.announcements,
-            child: appState.announcements.isEmpty
-                ? const _SectionEmptyState(
-                    icon: Icons.notifications_none_rounded,
-                    title: 'Новых объявлений пока нет',
-                    subtitle:
-                        'Когда появятся обновления от учебной части или по документам, они появятся здесь.',
-                  )
-                : Column(
-                    children: <Widget>[
-                      for (final announcement in appState.announcements) ...<Widget>[
-                        AnnouncementTile(announcement: announcement),
-                        if (announcement != appState.announcements.last)
-                          const Divider(height: 24),
+          StaggeredListAnimation(
+            index: 2,
+            child: SectionCard(
+              title: AppLocalizations.of(context)!.announcements,
+              child: appState.announcements.isEmpty
+                  ? const _SectionEmptyState(
+                      icon: Icons.notifications_none_rounded,
+                      title: 'Новых объявлений пока нет',
+                      subtitle:
+                          'Когда появятся обновления от учебной части или по документам, они появятся здесь.',
+                    )
+                  : Column(
+                      children: <Widget>[
+                        for (final announcement in appState.announcements) ...<Widget>[
+                          AnnouncementTile(announcement: announcement),
+                          if (announcement != appState.announcements.last)
+                            const Divider(height: 24),
+                        ],
                       ],
-                    ],
-                  ),
+                    ),
+            ),
           ),
         ];
 

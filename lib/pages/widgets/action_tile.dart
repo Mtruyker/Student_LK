@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../shared/animations/page_transitions.dart';
 import '../../shared/theme/app_colors.dart';
 
 /// Quick action tile with icon, label and subtitle.
@@ -20,18 +21,27 @@ class ActionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return SizedBox(
       width: MediaQuery.of(context).size.width > 420 ? 170 : double.infinity,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(22),
+      child: ScaleOnTap(
         onTap: onTap,
-        child: Ink(
+        child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.surfaceMuted,
-            border: Border.all(color: AppColors.border),
+            color: isDark ? AppColors.surfaceDark : AppColors.surface,
+            border: Border.all(
+              color: isDark ? AppColors.borderDark : AppColors.border,
+            ),
             borderRadius: BorderRadius.circular(22),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
