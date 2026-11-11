@@ -21,9 +21,11 @@ class SectionCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: theme.cardTheme.color,
-        border: theme.cardTheme.shape is RoundedRectangleBorder
-            ? (theme.cardTheme.shape as RoundedRectangleBorder).side
-            : null,
+        border: Border.all(
+          color: isDark
+              ? theme.colorScheme.outline
+              : theme.colorScheme.outline,
+        ),
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
